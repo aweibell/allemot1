@@ -54,6 +54,23 @@ export const PlayerGameFlow = ({ spelId, isDeltakar }) => {
         getResults()
     }, [spelId, activeExperiment?.id])
 
+    useEffect(() => {
+        if (!spelId || !activeExperiment?.id || !user) return
+        
+        const fetchExistingGuess = async () => {
+            const guessDoc = await gameService.getExistingGuess(
+                spelId,
+                activeExperiment.id,
+                user.uid
+            )
+            if (guessDoc) {
+                setUserGuess(guessDoc.value)
+            }
+        }
+        
+        fetchExistingGuess()
+    }, [spelId, activeExperiment?.id, user])
+
     const renderContent = () => {
         if (!spel) return <WaitingScreen message={'Fann ikkje spelet'} />
 
@@ -68,11 +85,10 @@ export const PlayerGameFlow = ({ spelId, isDeltakar }) => {
                 setUserGuess(undefined)
                 return <PresentExperiment experiment={activeExperiment} />
             case EXPERIMENT_STATUS.STEMMING.value:
-                return userGuess ? (
-                    <WaitingScreen message={`Du gjetta ${userGuess}`} />
-                ) : (
+                return (
                     <GuessInput
                         experiment={activeExperiment}
+                        existingGuess={userGuess}
                         onSubmit={value => {
                             console.log('submitting value', value)
                             const gs = value

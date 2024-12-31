@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'preact/hooks'
 import { gameService } from '../service/gameService.js'
 import { Box, Card, LinearProgress, Typography } from '@mui/material'
+import { formatTimeValue } from '../lib/utils.js'
 
 export const ExperimentDetailView = ({ spelId, experiment }) => {
     const [guesses, setGuesses] = useState([])
@@ -27,6 +28,10 @@ export const ExperimentDetailView = ({ spelId, experiment }) => {
     console.log('guesses', guesses)
     console.log('deltakarId', experiment.deltakarId)
 
+    const formatValue = (value) => {
+        return experiment.timeFormat ? formatTimeValue(value) : value
+    }
+
     return (
         <Card sx={{ p: 2 }}>
             <Typography variant="h6">{experiment.title}</Typography>
@@ -44,17 +49,24 @@ export const ExperimentDetailView = ({ spelId, experiment }) => {
 
             <Box sx={{ mt: 2 }}>
                 <Typography>
-                    Verdiområde: {experiment.utfallMin} - {experiment.utfallMax}
+                    Format: {experiment.timeFormat ? 'Tid (mm:ss)' : 'Nummer'}
+                </Typography>
+                <Typography>
+                    Verdiområde: {formatValue(experiment.utfallMin)} - {formatValue(experiment.utfallMax)}
                 </Typography>
                 <Typography>
                     <strong>{guesses.length}</strong> gjettingar
                 </Typography>
                 <Typography>
-                    Resultat: <strong>{experiment.resultat}</strong>
+                    Resultat: <strong>{formatValue(experiment.resultat)}</strong>
                 </Typography>
-                <Typography>Gjennomsnitt: {avgGuess.toFixed(1)}</Typography>
+                <Typography>
+                    Gjennomsnitt: {formatValue(Math.round(avgGuess))}
+                </Typography>
                 {deltakarGuess && (
-                    <Typography>Deltakar gjetting: {deltakarGuess}</Typography>
+                    <Typography>
+                        Deltakar gjetting: {formatValue(deltakarGuess)}
+                    </Typography>
                 )}
 
                 <LinearProgress

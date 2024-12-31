@@ -19,6 +19,8 @@ export const allemot1Theme = createTheme({
             main: '#a700fe',
         },
         background: {
+            default: '#250035',
+            paper: 'rgba(255, 255, 255, 0.1)',
             elevation1: '#3d005a',
             elevation2: '#250035',
         },
@@ -34,11 +36,17 @@ export const allemot1Theme = createTheme({
         MuiPaper: {
             styleOverrides: {
                 root: {
-                    backgroundColor: 'transparent', // 'rgba(255, 255, 255, 0.1)',
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    color: 'white',
                 },
             },
         },
         MuiListItemButton: {
+            // defaultProps: {
+            //     variants: ['eksperimentStatus', 'myCustomVariant']
+            // },
+            styleOverrides: {
+                root: {
             variants: [
                 {
                     props: { variant: 'eksperimentStatus' },
@@ -62,22 +70,28 @@ export const allemot1Theme = createTheme({
                     }),
                 },
             ],
+            },
         },
+    },
         MuiCard: {
-            variants: [
-                {
-                    props: { variant: 'translucent' },
-                    style: {
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                    },
+            styleOverrides: {
+                root: {
+                    variants: [
+                        {
+                            props: { variant: 'translucent' },
+                            style: {
+                                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                            },
+                        },
+                        {
+                            props: { variant: 'transparent' },
+                            style: {
+                                backgroundColor: 'transparent',
+                            },
+                        },
+                    ],
                 },
-                {
-                    props: { variant: 'transparent' },
-                    style: {
-                        backgroundColor: 'transparent',
-                    },
-                },
-            ],
+            },
         },
         MuiTextField: {
             styleOverrides: {
@@ -111,6 +125,15 @@ export const allemot1Theme = createTheme({
                         },
                     },
                 }),
+            },
+        },
+        MuiContainer: {
+            styleOverrides: {
+                root: {
+                    minHeight: '100vh',
+                    backgroundColor: '#250035 !important',
+                    padding: 0,
+                },
             },
         },
     },

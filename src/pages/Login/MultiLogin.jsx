@@ -1,4 +1,5 @@
 import { useState } from 'preact/hooks'
+import { useLocation } from 'preact-iso'
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
@@ -23,6 +24,7 @@ import {
 } from '@mui/material'
 
 const Login = () => {
+    const { route } = useLocation()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [isSignUp, setIsSignUp] = useState(false)
@@ -41,7 +43,9 @@ const Login = () => {
             if (isSignUp) {
                 await createUserWithEmailAndPassword(auth, email, password)
             } else {
-                await signInWithEmailAndPassword(auth, email, password)
+                const result = await signInWithEmailAndPassword(auth, email, password)
+                console.log('signInWithEmailAndPassword result', result)
+                route('/')
             }
         } catch (err) {
             setError(err.message)
@@ -86,7 +90,6 @@ const Login = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 p: 2,
-                bgcolor: 'grey.100',
             }}
         >
             <Paper

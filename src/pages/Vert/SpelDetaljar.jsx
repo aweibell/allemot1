@@ -15,7 +15,7 @@ import {
     DialogActions,
     ButtonGroup,
 } from '@mui/material'
-import { QRCode } from 'react-qr-code'
+import QRCode from 'react-qr-code'
 import { gameService } from '../../service/gameService.js'
 import { SPEL_STATUS } from '../../lib/types.js'
 

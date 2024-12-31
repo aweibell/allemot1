@@ -5,7 +5,6 @@ import { Container, ThemeProvider } from '@mui/material'
 import { Header } from './components/Header.jsx'
 import { Publikum } from './pages/Publikum/Publikum.jsx'
 import GameParticipant from './pages/Deltakar/Deltakar.jsx'
-import { Profil } from './pages/Login/Profil.jsx'
 import { Vert } from './pages/Vert/Vert.jsx'
 import { NotFound } from './pages/_404.jsx'
 import './style.css'
@@ -18,6 +17,7 @@ import { PlayerGameFlow } from './pages/Deltakar/GameFlow.jsx'
 import { VertGameFlow } from './pages/Vert/VertGameFlow.jsx'
 import { ResultatSkjerm } from './pages/ResultatSkjerm.jsx'
 import { allemot1Theme } from './muiTheme.js'
+import { WelcomePage } from './pages/WelcomePage.jsx'
 
 console.log('rendering App')
 
@@ -28,11 +28,25 @@ export function App() {
         return <div>Loading..</div>
     }
     if (!user) {
-        console.log('returning Login component')
+        console.log('returning Login component since no user', user)
         return (
-            <div>
-                <MultiLogin />
-            </div>
+            <ThemeProvider theme={allemot1Theme}>
+                <Container
+                    sx={{
+                        minHeight: '100vh',
+                        bgcolor: 'grey.100',
+                        p: 0
+                    }}
+                >
+                    <LocationProvider>
+                        <RoutingDebugger /> 
+                        <Router>
+                            <Route path="/" component={WelcomePage} />
+                            <Route path="/login" component={MultiLogin} />
+                        </Router>
+                    </LocationProvider>
+                </Container>
+            </ThemeProvider>
         )
     }
     const isConnected = getConnectionState() === 'connected'
@@ -49,20 +63,22 @@ export function App() {
                 }}
             >
                 <LocationProvider>
+                    <RoutingDebugger /> 
                     <Header />
                     <main style={{ height: '100%' }}>
                         <Router>
-                            <RoutingDebugger />
+                            <Route path="/" component={() => {
+                                console.log('%cRoot route rendered', 'color: orange; font-weight: bold');
+                                return <Publikum />;
+                            }} />
                             <Route
                                 path="/resultat/:spelId"
                                 component={ResultatSkjerm}
                             />
-                            <Route path="/" component={Publikum} />
                             <Route
                                 path="/deltakar/:spelkode/"
                                 component={GameParticipant}
                             />
-                            <Route path="/profil/" component={Profil} />
                             <Route path="/admin" component={SuperAdminPage} />
                             <Route path="/vert/" component={Vert} />
                             <Route
@@ -77,8 +93,12 @@ export function App() {
                                 path="/spel/:spelId"
                                 component={PlayerGameFlow}
                             />
+                            <Route path="/login/" component={MultiLogin} />
                             <Route path="/loggut/" component={LogoutPage} />
-                            <Route default component={NotFound} />
+                            <Route default component={() => {
+                                console.log('%cDefault route rendered', 'color: orange; font-weight: bold');
+                                return <NotFound />;
+                            }} />
                         </Router>
                     </main>
                 </LocationProvider>
@@ -88,19 +108,15 @@ export function App() {
 }
 
 function RoutingDebugger() {
-    const { path, route, params } = useLocation()
-    console.log('RoutingDebugger', 'color: red; font-weight: bold')
+    const { path } = useLocation()
+    console.log('%cRoutingDebugger', 'color: red; font-weight: bold')
     useEffect(() => {
         console.log(
             '%cRoute changed:',
             'background-color: red; color: white; padding: 3px;',
-            {
-                path,
-                route,
-                params,
-            }
+                '['+path+']',
         )
-    }, [path, route, params])
+    }, [path ])
     return null
 }
 

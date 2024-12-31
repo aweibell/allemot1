@@ -8,16 +8,14 @@ import {
 } from '../service/superAdminDbService.js'
 import ConnectionStatus from './ConnectionStatus.jsx'
 import { gameService } from '../service/gameService.js'
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, IconButton, TextField } from '@mui/material'
+import { Edit, Check } from '@mui/icons-material'
 
 function HeaderNav(props) {
     return (
         <nav>
             <a href="/" class={props.url === '/' && 'active'}>
                 <strong>Spel!</strong>
-            </a>
-            <a href="/profil" class={props.url === '/profil' && 'active'}>
-                Profil
             </a>
             {(props.vertUser || props.reallySuperAdmin) && (
                 <a href="/vert" class={props.url === '/vert' && 'active'}>
@@ -48,6 +46,8 @@ export function Header() {
     const [isReallySuperAdmin, setIsReallySuperAdmin] = useState(false)
     const [isVertUser, setIsVertUser] = useState(false)
     const [userObject, setUserObject] = useState({ nickname: '-.|.-' })
+    const [isEditing, setIsEditing] = useState(false)
+    const [editedNickname, setEditedNickname] = useState('')
 
     useEffect(() => {
         if (!user) {
@@ -86,6 +86,24 @@ export function Header() {
     if (url.match('resultat')) {
         return null
     }
+
+    const handleEditClick = () => {
+        setEditedNickname(userObject.nickname || '')
+        setIsEditing(true)
+    }
+
+    const handleSubmit = async () => {
+        if (!user || !editedNickname.trim()) return
+
+        try {
+            await gameService.updateUserNickname(user.uid, editedNickname)
+            setUserObject({ ...userObject, nickname: editedNickname.trim() })
+            setIsEditing(false)
+        } catch (err) {
+            console.error('Failed to update nickname:', err)
+        }
+    }
+
     return (
         <header
             style={{
@@ -112,11 +130,36 @@ export function Header() {
                 sx={{
                     alignSelf: 'flex-start',
                     color: 'secondary.main',
+                    display: 'flex',
+                    alignItems: 'center',
                 }}
             >
                 {loading
                     ? 'Loading...'
-                    : userObject && <div>{userObject.nickname}</div>}
+                    : userObject && (
+                        isEditing ? (
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <TextField
+                                    size="small"
+                                    value={editedNickname}
+                                    onChange={(e) => setEditedNickname(e.target.value)}
+                                    onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
+                                    autoFocus
+                                    sx={{ width: '120px' }}
+                                />
+                                <IconButton onClick={handleSubmit} size="small" sx={{ color: 'secondary.main' }}>
+                                    <Check />
+                                </IconButton>
+                            </Box>
+                        ) : (
+                            <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={handleEditClick}>
+                                <span>{userObject.nickname}</span>
+                                <IconButton size="small" sx={{ color: 'secondary.main' }}>
+                                    <Edit fontSize="small" />
+                                </IconButton>
+                            </Box>
+                        )
+                    )}
             </Box>
             <HeaderNav
                 url={url}

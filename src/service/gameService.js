@@ -143,6 +143,14 @@ export const gameService = {
     async submitGuess(spelId, ekspId, userId, value) {
         const spelDoc = await getDoc(doc(db, 'spel', spelId))
         const isDeltakar = spelDoc.data().deltakarId === userId
+        
+        // Use getExistingGuess instead of direct firestore query
+        const existingGuess = await this.getExistingGuess(spelId, ekspId, userId)
+
+        if (existingGuess && !isDeltakar) {
+            throw new Error('Det er berre lov å gjetta ein gong :)')
+        }
+
         const guessRef = doc(
             db,
             'spel',
@@ -152,11 +160,6 @@ export const gameService = {
             'gjettingar',
             userId
         )
-        const existingGuess = await getDoc(guessRef)
-
-        if (existingGuess.exists() && !isDeltakar) {
-            throw new Error('Det er berre lov å gjetta ein gong :)')
-        }
 
         await setDoc(guessRef, {
             value,
@@ -198,5 +201,39 @@ export const gameService = {
                 Math.abs(audienceAverage - ekspDoc.data().resultat) <=
                 Math.abs(deltakarGuess - ekspDoc.data().resultat),
         }
+    },
+
+    async getExistingGuess(spelId, ekspId, userId) {
+        const guessRef = doc(
+            db,
+            'spel',
+            spelId,
+            'eksperiment',
+            ekspId,
+            'gjettingar',
+            userId
+        )
+        const guessDoc = await getDoc(guessRef)
+        return guessDoc.exists() ? guessDoc.data() : null
+    },
+
+    async updateUserNickname(userId, nickname) {
+        return updateDoc(doc(db, 'users', userId), {
+            nickname: nickname.trim(),
+            updatedAt: serverTimestamp()
+        })
+    },
+
+    async getUserProfile(userId) {
+        const userDoc = await getDoc(doc(db, 'users', userId))
+        return userDoc.exists() ? userDoc.data() : null
+    },
+
+    listenToUserProfile(userId, callback) {
+        return onSnapshot(doc(db, 'users', userId), (docSnapshot) => {
+            if (docSnapshot.exists()) {
+                callback({ id: docSnapshot.id, ...docSnapshot.data() })
+            }
+        })
     },
 }

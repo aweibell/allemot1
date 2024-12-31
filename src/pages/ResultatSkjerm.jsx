@@ -12,6 +12,7 @@ export const ResultatSkjerm = ({ spelId }) => {
     const [activeExperiment, setActiveExperiment] = useState(null)
     const [spel, setSpel] = useState(null)
     const [resultatData, setResultatData] = useState({})
+    const [showResult, setShowResult] = useState(false)
     const [showAverage, setShowAverage] = useState(false)
 
     useEffect(() => {
@@ -45,6 +46,9 @@ export const ResultatSkjerm = ({ spelId }) => {
         setShowAverage(
             activeExperiment.status === EXPERIMENT_STATUS.FERDIG.value
         )
+        setShowResult(
+             [EXPERIMENT_STATUS.FERDIG.value, EXPERIMENT_STATUS.RESULTAT.value, EXPERIMENT_STATUS.AVSLUTTA.value].includes(activeExperiment.status)
+        )
     }, [activeExperiment?.status])
 
     if (!spel) return <WaitingScreen message={'Fann ikkje spelet'} />
@@ -56,7 +60,7 @@ export const ResultatSkjerm = ({ spelId }) => {
         <Container>
             <ResultDisplay
                 spelId={spelId}
-                result={resultatData.result}
+                result={showResult ? resultatData.result : null}
                 deltakarGuess={resultatData.deltakarGuess}
                 experiment={activeExperiment}
                 average={resultatData.audienceAverage}

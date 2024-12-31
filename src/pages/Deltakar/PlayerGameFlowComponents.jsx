@@ -1,5 +1,6 @@
 import { Box, Button, Card, Slider, Typography } from '@mui/material'
 import { useState } from 'preact/hooks'
+import { formatTimeValue } from '../../lib/utils'
 
 export const WaitingScreen = ({ message }) => (
     <Box sx={{ textAlign: 'center', mt: 4 }}>
@@ -39,13 +40,18 @@ export const PresentExperiment = ({ experiment }) => (
     </Card>
 )
 
-export const GuessInput = ({ experiment, userGuess, onSubmit }) => {
+export const GuessInput = ({ experiment, existingGuess, onSubmit }) => {
+    // Set initial slider position to either the existing guess or the middle of the allowed range
     const [value, setValue] = useState(
-        userGuess || (experiment.utfallMin + experiment.utfallMax) / 2
+        existingGuess ?? (experiment.utfallMin + experiment.utfallMax) / 2
     )
 
+    const formatValue = (val) => {
+        return experiment.timeFormat ? formatTimeValue(val) : val;
+    }
+
     return (
-        <Card variant="transparent" sx={{ mx: 'auto', mt: 4, p: 3 }}>
+        <Card variant="translucent" sx={{ mx: 'auto', mt: 4, p: 3 }}>
             <Typography variant="h5">{experiment.title}</Typography>
             <Typography sx={{ mt: 2 }}>{experiment.description}</Typography>
             {experiment.image && (
@@ -59,31 +65,46 @@ export const GuessInput = ({ experiment, userGuess, onSubmit }) => {
             )}
             <Box sx={{ mt: 3 }}>
                 <Slider
-                    value={value}
+                    value={existingGuess || value}
                     onChange={(e, val) => setValue(val)}
                     min={experiment.utfallMin}
                     max={experiment.utfallMax}
                     valueLabelDisplay="on"
+                    valueLabelFormat={formatValue}
+                    disabled={existingGuess !== null}
                 />
                 <Box
                     sx={{
                         display: 'flex',
                         justifyContent: 'space-between',
                         mt: 1,
+                        mb: 2
                     }}
                 >
-                    <Typography>{experiment.utfallMin}</Typography>
-                    <Typography>{experiment.utfallMax}</Typography>
+                    <Typography>{formatValue(experiment.utfallMin)}</Typography>
+                    <Typography>{formatValue(experiment.utfallMax)}</Typography>
                 </Box>
-                <Button
-                    variant="contained"
-                    fullWidth
-                    onClick={() => onSubmit(value)}
-                    disabled={userGuess}
-                    sx={{ mt: 2 }}
-                >
-                    {userGuess ? 'Svar sendt!' : 'Send svar'}
-                </Button>
+                {existingGuess !== null ? (
+                    <Box sx={{ 
+                        textAlign: 'center', 
+                        p: 2, 
+                        bgcolor: 'background.paper',
+                        borderRadius: 1
+                    }}>
+                        <Typography>
+                            Du gjetta {formatValue(existingGuess)}
+                        </Typography>
+                    </Box>
+                ) : (
+                    <Button
+                        variant="contained"
+                        fullWidth
+                        onClick={() => onSubmit(value)}
+                        sx={{ mt: 2 }}
+                    >
+                        Send svar
+                    </Button>
+                )}
             </Box>
         </Card>
     )

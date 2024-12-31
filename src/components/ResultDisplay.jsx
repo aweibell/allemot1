@@ -1,13 +1,14 @@
 import { keyframes } from '@mui/system'
 import { useEffect, useState } from 'preact/hooks'
-import { h } from 'preact'
 import { Box, Card, Fade, Typography } from '@mui/material'
+import { formatTimeValue } from '../lib/utils'
 
 const slideIn = keyframes`
   from { left: 0%; }
   to { left: ${props => props['--final-position']}; }
 `
 const animationTimeMs = 3500
+
 
 const ValueMarker = ({
     position,
@@ -17,10 +18,8 @@ const ValueMarker = ({
     animate,
     below,
     showValue = true,
+    timeFormat = false,
 }) => {
-    console.log(
-        `ValueMarker ${label} ${below ? '_below_' : ''} value ${value} ${showValue ? 'showValue' : '--'} ${animate ? '_animate_' : ''} position ${position}`
-    )
     return (
         <Box
             sx={{
@@ -67,7 +66,7 @@ const ValueMarker = ({
                         mt: below ? 0 : 1,
                     }}
                 >
-                    {showValue && value}
+                    {showValue && (timeFormat ? formatTimeValue(value) : value)}
                 </Box>
                 {below && (
                     <Typography
@@ -89,7 +88,7 @@ export const ResultDisplay = ({
     userGuess,
     onAnimationEnd,
 }) => {
-    const [showResult, setShowResult] = useState(false)
+    const [showVinnar, setShowVinnar] = useState(false)
     const scale = experiment.utfallMax - experiment.utfallMin
     const getPosition = value => ((value - experiment.utfallMin) / scale) * 100
     const range = Math.abs(deltakarGuess - result)
@@ -104,13 +103,13 @@ export const ResultDisplay = ({
 
     useEffect(() => {
         if (showAverage) {
-            console.log('%cshowAverage', 'color: red')
             const timer = setTimeout(() => {
-                setShowResult(true)
-                console.log('%csetShowResult true', 'color: green')
+                setShowVinnar(true)
                 onAnimationEnd?.()
             }, animationTimeMs)
             return () => clearTimeout(timer)
+        } else {
+            setShowVinnar(false)
         }
     }, [showAverage])
 
@@ -153,6 +152,7 @@ export const ResultDisplay = ({
                 />
 
                 {/* Range indicator */}
+                {result && (
                 <Box
                     sx={{
                         position: 'absolute',
@@ -162,8 +162,9 @@ export const ResultDisplay = ({
                         height: 20,
                         bgcolor: 'rgba(255,255,255,0.2)',
                         borderRadius: 2,
-                    }}
-                />
+                        }}
+                    />
+                )}
 
                 {deltakarGuess && (
                     <ValueMarker
@@ -171,6 +172,7 @@ export const ResultDisplay = ({
                         color="#ff5722"
                         label="Deltakar"
                         value={deltakarGuess}
+                        timeFormat={experiment.timeFormat}
                     />
                 )}
 
@@ -179,6 +181,7 @@ export const ResultDisplay = ({
                     color="white"
                     label="Resultat"
                     value={result}
+                    timeFormat={experiment.timeFormat}
                 />
 
                 {userGuess && (
@@ -187,6 +190,7 @@ export const ResultDisplay = ({
                         color="#2196f3"
                         label="Du"
                         value={userGuess}
+                        timeFormat={experiment.timeFormat}
                     />
                 )}
 
@@ -198,7 +202,8 @@ export const ResultDisplay = ({
                         value={publikumAvg}
                         animate={true}
                         below={true}
-                        showValue={showResult}
+                        showValue={showVinnar}
+                        timeFormat={experiment.timeFormat}
                     />
                 )}
                 <Typography
@@ -209,7 +214,9 @@ export const ResultDisplay = ({
                         color: 'white',
                     }}
                 >
-                    {experiment.utfallMin}
+                    {experiment.timeFormat 
+                        ? formatTimeValue(experiment.utfallMin)
+                        : experiment.utfallMin}
                 </Typography>
                 <Typography
                     sx={{
@@ -219,11 +226,13 @@ export const ResultDisplay = ({
                         color: 'white',
                     }}
                 >
-                    {experiment.utfallMax}
+                    {experiment.timeFormat 
+                        ? formatTimeValue(experiment.utfallMax)
+                        : experiment.utfallMax}
                 </Typography>
             </Box>
 
-            <Fade in={showResult}>
+            <Fade in={showVinnar}>
                 <Box
                     sx={{
                         mt: 4,
