@@ -23,10 +23,17 @@ console.log('rendering App')
 
 export function App() {
     const { user, loading } = useAuth()
+    const isConnected = getConnectionState() === 'connected'
+    
+    // Only show warning if we're still loading or explicitly disconnected
+    // Don't show warning during the initial 'unknown' state
+    const connectionWarning = !loading && getConnectionState() === 'disconnected'
 
     if (loading) {
         return <div>Loading..</div>
     }
+
+    // Separate routing for unauthenticated users
     if (!user) {
         console.log('returning Login component since no user', user)
         return (
@@ -35,7 +42,10 @@ export function App() {
                     sx={{
                         minHeight: '100vh',
                         bgcolor: 'grey.100',
-                        p: 0
+                        p: 0,
+                        border: connectionWarning ? 'solid red 3px' : 'none',
+                        padding: connectionWarning ? '2px' : '0',
+                        margin: connectionWarning ? '2px' : '0',
                     }}
                 >
                     <LocationProvider>
@@ -43,15 +53,15 @@ export function App() {
                         <Router>
                             <Route path="/" component={WelcomePage} />
                             <Route path="/login" component={MultiLogin} />
+                            <Route path="/spel/:spelId" component={PlayerGameFlow} />
+                            <Route default component={WelcomePage} />
                         </Router>
                     </LocationProvider>
                 </Container>
             </ThemeProvider>
         )
     }
-    const isConnected = getConnectionState() === 'connected'
-    console.log('isConnected?', isConnected)
-    const connectionWarning = loading || !isConnected
+
     return (
         <ThemeProvider theme={allemot1Theme}>
             <Container

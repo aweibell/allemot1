@@ -34,6 +34,10 @@ const Login = () => {
     const [resetEmail, setResetEmail] = useState('')
     const [resetSuccess, setResetSuccess] = useState(false)
 
+    // Get redirect URL from query parameters
+    const searchParams = new URLSearchParams(window.location.search)
+    const redirectUrl = searchParams.get('redirect') || '/'
+
     const handleEmailAuth = async e => {
         e.preventDefault()
         setLoading(true)
@@ -43,10 +47,10 @@ const Login = () => {
             if (isSignUp) {
                 await createUserWithEmailAndPassword(auth, email, password)
             } else {
-                const result = await signInWithEmailAndPassword(auth, email, password)
-                console.log('signInWithEmailAndPassword result', result)
-                route('/')
+                await signInWithEmailAndPassword(auth, email, password)
             }
+            // Redirect after successful login
+            route(redirectUrl)
         } catch (err) {
             setError(err.message)
         }
@@ -60,6 +64,8 @@ const Login = () => {
 
         try {
             await signInAnonymously(auth)
+            // Redirect after successful login
+            route(redirectUrl)
         } catch (err) {
             setError(err.message)
         }

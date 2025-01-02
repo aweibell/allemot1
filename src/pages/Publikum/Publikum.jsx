@@ -4,12 +4,26 @@ import './style.css'
 import { paperSx } from '../../lib/commonSx.js'
 import { useAuth } from '../../service/firebaseService'
 import { canUserCreateSpel } from '../../service/superAdminDbService'
+import { useState, useEffect } from 'react'
 
 export function Publikum() {
     const { user } = useAuth()
     console.log('%cPublikum page', 'color: green; font-weight: bold')
     console.log('user', user)
-    const canCreateSpel = canUserCreateSpel(user)
+    const [canCreateSpel, setCanCreateSpel] = useState(false)
+
+    useEffect(() => {
+        async function checkPermissions() {
+            if (!user) {
+                setCanCreateSpel(false)
+                return
+            }
+            const canCreate = await canUserCreateSpel(user.uid)
+            setCanCreateSpel(canCreate)
+        }
+        checkPermissions()
+    }, [user])
+
     return (
         <div class="home">
             <img

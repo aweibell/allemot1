@@ -9,7 +9,7 @@ import {
     WaitingScreen,
     WelcomeScreen,
 } from './PlayerGameFlowComponents.jsx'
-import { Paper } from '@mui/material'
+import { Paper, Button, Typography, Box } from '@mui/material'
 import { useAuth } from '../../service/firebaseService.js'
 import { ResultDisplay } from '../../components/ResultDisplay.jsx'
 
@@ -17,8 +17,32 @@ export const PlayerGameFlow = ({ spelId, isDeltakar }) => {
     const [spel, setSpel] = useState(null)
     const [activeExperiment, setActiveExperiment] = useState(null)
     const [userGuess, setUserGuess] = useState(null)
-    const { user } = useAuth()
+    const { user, loading } = useAuth()
     const [resultatData, setResultatData] = useState()
+
+    if (loading) {
+        return <WaitingScreen message="Lastar..." />
+    }
+
+    if (!user) {
+        return (
+            <Paper sx={{ p: 3, mt: 4, textAlign: 'center' }}>
+                <Typography variant="h5" gutterBottom>
+                    Du må logga inn for å delta
+                </Typography>
+                <Box sx={{ mt: 2 }}>
+                    <Button 
+                        variant="contained" 
+                        href={`/login?redirect=/spel/${spelId}`}
+                        color="primary"
+                    >
+                        Logg inn
+                    </Button>
+                </Box>
+            </Paper>
+        )
+    }
+
     console.log(
         'activeExperiment',
         activeExperiment?.title,

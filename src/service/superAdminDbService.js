@@ -56,12 +56,15 @@ export const subscribeToEmailUsers = callback => {
 
 // Check if user can be vert
 export const canUserCreateSpel = async userId => {
+    if (!userId) return false
+    
     const userDoc = await getDoc(doc(db, 'users', userId))
+    if (!userDoc.exists()) return false
+    
+    const userData = userDoc.data()
     return (
-        (userDoc.exists() &&
-            userDoc.data().email !== undefined &&
-            userDoc.data().canBeVert === true) ||
-        userDoc.data().isSuperAdmin === true
+        (userData?.email && userData?.canBeVert === true) || 
+        userData?.isSuperAdmin === true
     )
 }
 

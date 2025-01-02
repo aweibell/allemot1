@@ -62,22 +62,24 @@ export function Header() {
 
     useEffect(() => {
         async function checkAdmin() {
-            if (user) {
-                const adminStatus = await isSuperAdmin(user.uid)
-                // console.log(user.email, 'adminStatus', adminStatus)
-                setIsReallySuperAdmin(adminStatus)
+            if (!user) {
+                setIsReallySuperAdmin(false)
+                return
             }
+            const adminStatus = await isSuperAdmin(user.uid)
+            setIsReallySuperAdmin(adminStatus)
         }
         checkAdmin()
     }, [user])
 
     useEffect(() => {
         async function checkVertUser() {
-            if (user) {
-                const vertStatus = await canUserCreateSpel(user.uid)
-                // console.log(user.email, 'vertStatus', vertStatus)
-                setIsVertUser(vertStatus)
+            if (!user) {
+                setIsVertUser(false)
+                return
             }
+            const vertStatus = await canUserCreateSpel(user.uid)
+            setIsVertUser(vertStatus)
         }
         checkVertUser()
     }, [user])
