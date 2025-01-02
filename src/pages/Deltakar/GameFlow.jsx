@@ -99,6 +99,9 @@ export const PlayerGameFlow = ({ spelId, isDeltakar }) => {
         if (!spel) return <WaitingScreen message={'Fann ikkje spelet'} />
 
         if (!activeExperiment) {
+            if (spel.status === SPEL_STATUS.IGANG) {
+                return <ReadyScreen />
+            }
             return <WelcomeScreen spel={spel} isDeltakar={isDeltakar} />
         }
 
@@ -106,7 +109,7 @@ export const PlayerGameFlow = ({ spelId, isDeltakar }) => {
             case EXPERIMENT_STATUS.NESTE.value:
                 return <ReadyScreen /> //  experiment={activeExperiment} />
             case EXPERIMENT_STATUS.PRESENTERT.value:
-                setUserGuess(undefined)
+                setUserGuess(null)
                 return <PresentExperiment experiment={activeExperiment} />
             case EXPERIMENT_STATUS.STEMMING.value:
                 return (
@@ -132,7 +135,16 @@ export const PlayerGameFlow = ({ spelId, isDeltakar }) => {
                 )
             case EXPERIMENT_STATUS.LUKKA.value:
             case EXPERIMENT_STATUS.SVAR_LAAST.value:
-                return <PresentExperiment experiment={activeExperiment} />
+                return (
+                    <ResultDisplay
+                        spelId={spelId}
+                        result={null}
+                        deltakarGuess={resultatData?.deltakarGuess}
+                        experiment={activeExperiment}
+                        userGuess={userGuess}
+                        showAverage={false}
+                    />
+                )
             case EXPERIMENT_STATUS.RESULTAT.value:
                 return (
                     <ResultDisplay

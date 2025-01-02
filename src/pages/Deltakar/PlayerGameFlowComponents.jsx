@@ -26,7 +26,12 @@ export const ReadyScreen = () => (
     </Card>
 )
 
-export const PresentExperiment = ({ experiment }) => (
+export const PresentExperiment = ({ experiment }) => {
+
+    const formatValue = (val) => {
+        return experiment.timeFormat ? formatTimeValue(val) : val;
+    }
+    return (
     <Card
         variant="transparent"
         sx={{ mx: 'auto', mt: 4, p: 3, textAlign: 'center' }}
@@ -34,11 +39,12 @@ export const PresentExperiment = ({ experiment }) => (
         <Typography variant={'h4'}>{experiment.title}</Typography>
         <Typography sx={{ mt: 2 }}>{experiment.description}</Typography>
         <Typography sx={{ mt: 2, fontWeight: 'bold' }}>
-            Svaret ligg ein stad mellom {experiment.utfallMin} og{' '}
-            {experiment.utfallMax}
+            Svaret ligg ein stad mellom {formatTimeValue(experiment.utfallMin)} og{' '}
+            {formatTimeValue(experiment.utfallMax)}
         </Typography>
     </Card>
 )
+} 
 
 export const GuessInput = ({ experiment, existingGuess, onSubmit }) => {
     // Set initial slider position to either the existing guess or the middle of the allowed range

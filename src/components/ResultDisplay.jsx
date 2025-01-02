@@ -151,17 +151,17 @@ export const ResultDisplay = ({
                     }}
                 />
 
-                {/* Range indicator */}
+                {/* Range indicator - only show when result exists */}
                 {result && (
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: `${getPosition(rangeStart)}%`,
-                        width: `${((rangeEnd - rangeStart) / scale) * 100}%`,
-                        height: 20,
-                        bgcolor: 'rgba(255,255,255,0.2)',
-                        borderRadius: 2,
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: `${getPosition(rangeStart)}%`,
+                            width: `${((rangeEnd - rangeStart) / scale) * 100}%`,
+                            height: 20,
+                            bgcolor: 'rgba(255,255,255,0.2)',
+                            borderRadius: 2,
                         }}
                     />
                 )}
@@ -176,13 +176,16 @@ export const ResultDisplay = ({
                     />
                 )}
 
-                <ValueMarker
-                    position={getPosition(result)}
-                    color="white"
-                    label="Resultat"
-                    value={result}
-                    timeFormat={experiment.timeFormat}
-                />
+                {/* Only show result marker when result exists */}
+                {result && (
+                    <ValueMarker
+                        position={getPosition(result)}
+                        color="white"
+                        label="Resultat"
+                        value={result}
+                        timeFormat={experiment.timeFormat}
+                    />
+                )}
 
                 {userGuess && (
                     <ValueMarker
