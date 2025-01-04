@@ -60,15 +60,19 @@ export const ExperimentDetailView = ({ spelId, experiment }) => {
                 <Typography>
                     Resultat: <strong>{formatValue(experiment.resultat)}</strong>
                 </Typography>
+                {deltakarGuess && (
+                <Typography>
+                        Deltakar gjetting: {formatValue(deltakarGuess)}
+                </Typography>
+                )}
+                {!deltakarGuess && (
+                <Typography color='warning.main' sx={{fontWeight:'bold'}}>
+                        Deltakar har ikkje gjetta!
+                </Typography>
+                )}
                 <Typography>
                     Gjennomsnitt: {formatValue(Math.round(avgGuess))}
                 </Typography>
-                {deltakarGuess && (
-                    <Typography>
-                        Deltakar gjetting: {formatValue(deltakarGuess)}
-                    </Typography>
-                )}
-
                 <LinearProgress
                     variant="determinate"
                     value={

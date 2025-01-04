@@ -2,22 +2,22 @@ export const SPEL_STATUS = {
     OPPRETTA: {
         value: 'OPPRETTA',
         description: 'Oppretta',
-        color: 'orange',
+        color: '#FFA500',
     },
     KLARGJORT: {
         value: 'KLARGJORT',
         description: 'Klargjort',
-        color: 'magenta',
+        color: '#FF00FF',
     },
     IGANG: {
         value: 'IGANG',
         description: 'I gang',
-        color: 'darkgreen',
+        color: '#1b5e20',
     },
     AVSLUTTA: {
         value: 'AVSLUTTA',
         description: 'Avslutta',
-        color: 'black',
+        color: '#000000',
     },
 }
 

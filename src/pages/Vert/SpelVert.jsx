@@ -25,17 +25,21 @@ export const ExperimentList = ({
 }) => {
     return (
         <Card sx={{ p: 2, mb: 2 }}>
-            <Typography variant="h6">Sett opp eksperimenter</Typography>
-            <List>
+            <Typography variant="h6">Eksperimenter</Typography>
+            <List sx={{display:'flex', flexDirection:'column', gap:'0.4rem'}}>
                 {experiments.map((exp, index) => (
                     <ListItem
                         key={exp.id}
                         sx={{
+                            borderRadius: '0.5rem',
                             backgroundColor:
                                 index === currentIndex
                                     ? 'darkmagenta'
                                     : 'inherit',
                             color: index === currentIndex ? 'white' : 'inherit',
+                            '&:hover': {
+                                bgcolor: 'background.elevation4',
+                            }
                         }}
                         button
                         selected={index === currentIndex}

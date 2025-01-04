@@ -1,4 +1,6 @@
-import { List, ListItem, Typography, Chip } from '@mui/material'
+import styled from '@emotion/styled'
+import { List, ListItem, Typography, Chip, colors } from '@mui/material'
+import { SPEL_STATUS } from '../lib/types'
 
 export function SpelList({ spel }) {
     return (
@@ -8,7 +10,11 @@ export function SpelList({ spel }) {
                     key={game.id}
                     component="a"
                     href={`/vert/spel/${game.id}`}
-                    sx={{
+                    sx={(theme) => ({
+                        border: 'solid thin',
+                        borderColor: theme.palette.background.elevation3,
+                        borderRadius: '0.5rem',
+                        bgcolor: 'background.elevation1',
                         mb: 2,
                         p: 2,
                         textDecoration: 'none',
@@ -16,7 +22,7 @@ export function SpelList({ spel }) {
                         '&:hover': {
                             backgroundColor: 'rgba(0, 0, 0, 0.04)',
                         },
-                    }}
+                    })}
                 >
                     <div style={{ width: '100%' }}>
                         <div
@@ -29,22 +35,27 @@ export function SpelList({ spel }) {
                             <Typography variant="h6">{game.namn}</Typography>
                             <Chip
                                 label={game.status}
-                                color={
-                                    game.status === 'oppretta'
-                                        ? 'primary'
-                                        : 'success'
+                                sx={(theme) => ({
+                                        color: theme.palette.getContrastText(SPEL_STATUS[game.status].color),
+                                        bgcolor: SPEL_STATUS[game.status].color,
+                                    })
                                 }
                                 onClick={e => e.preventDefault()}
                             />
                         </div>
-                        <Typography color="text.secondary">
+                        <Typography color="vert.dark">
                             {game.dato}
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
+                        <div>
+                            <Typography variant="body2" component={"span"} sx={{color:"vert.dark"}}>
+                                Deltakar:
+                            </Typography>
+                            <Typography component={"span"} color="deltakar.main">
                             {game.deltakarId
-                                ? `Deltakar: ${game.deltakarEmail}`
-                                : 'Ingen deltakar valgt'}
-                        </Typography>
+                                    ? ` ${game.deltakarEmail}`
+                                    : ' Ingen deltakar valgt'}
+                            </Typography>
+                        </div>
                     </div>
                 </ListItem>
             ))}

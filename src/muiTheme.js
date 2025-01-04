@@ -18,11 +18,20 @@ export const allemot1Theme = createTheme({
         publikum: {
             main: '#a700fe',
         },
+        vert: {
+            main: '#ffffed',
+            dark: '#d1d1c0',
+            light: '#fffdfb'
+        },
         background: {
             default: '#250035',
             paper: 'rgba(255, 255, 255, 0.1)',
+            // @ts-ignore
             elevation1: '#3d005a',
             elevation2: '#250035',
+            elevation3: '#4a255c',
+            elevation4: '#603b74',
+             // elevation 1? #1a0026
         },
     },
     components: {
@@ -41,6 +50,22 @@ export const allemot1Theme = createTheme({
                 },
             },
         },
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    '&.Mui-disabled': {
+                        color:'grey'
+                    }
+                }
+            }
+        },/*
+        MuiContainer: {
+            styleOverrides: {
+                root: {
+                    padding: 0
+                }
+            }
+        },*/
         MuiListItemButton: {
             // defaultProps: {
             //     variants: ['eksperimentStatus', 'myCustomVariant']
@@ -116,13 +141,15 @@ export const allemot1Theme = createTheme({
                 },
             },
         },
-        MuiTableHead: {
+        MuiTable: {
             styleOverrides: {
                 root: ({ theme }) => ({
-                    '& .MuiTableRow': {
-                        '& .MuiTableCell': {
-                            color: theme.palette.primary.main,
-                        },
+                    '& th': {
+                        color: theme.palette.primary.main,
+                        fontWeight: 'bold',
+                    },
+                    '& td': {
+                        color: theme.palette.secondary.main,
                     },
                 }),
             },
