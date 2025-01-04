@@ -104,9 +104,9 @@ const Login = () => {
                     p: 4,
                     width: '100%',
                     maxWidth: 400,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 2,
+                    display: 'grid',
+                    flexDirection: 'flex',
+                    gap: 0,
                 }}
             >
                 <Typography
@@ -122,6 +122,17 @@ const Login = () => {
                         {error}
                     </Alert>
                 )}
+                <Button
+                    sx={{gap:0}}
+                    variant="outlined"
+                    fullWidth
+                    onClick={handleAnonymousAuth}
+                    disabled={loading}
+                >
+                    Hald fram som gjest
+                </Button>
+                <Typography sx={{marginBottom:'0.5rem', gap:0, justifySelf: 'center', fontSize:'0.8rem'}}>(Det fungerer heilt fint for ein kveld)</Typography>
+                <Divider sx={{ my: 2 }}>eller</Divider>
                 <form onSubmit={handleEmailAuth} style={{ width: '100%' }}>
                     <TextField
                         fullWidth
@@ -191,16 +202,6 @@ const Login = () => {
                         </Button>
                     )}
                 </Box>
-                <Divider sx={{ my: 2 }}>eller</Divider>
-                <Button
-                    variant="outlined"
-                    fullWidth
-                    onClick={handleAnonymousAuth}
-                    disabled={loading}
-                >
-                    Hald fram som gjest
-                </Button>
-                (Det fungerer heilt fint for ein kveld)
             </Paper>
 
             {/* Password Reset Dialog */}

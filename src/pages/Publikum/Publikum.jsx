@@ -29,7 +29,7 @@ export function Publikum() {
             <img
                 src={allemot1Logo}
                 alt="Alle mot 1-logo"
-                style={{ height: '10vw', width: '10vw' }}
+                style={{ height: '20vw', width: '20vw', paddingTop: '2rem' }}
             />
             <h1>Klar for Alle mot 1?</h1>
             <section>

@@ -24,39 +24,33 @@ export const GameStatus = ({ spelId, spel }) => {
                             gameService.updateGameStatus(spelId, status.value)
                         }
                         disabled={spel?.status === status.value}
-                        sx={{
+                        sx={(theme) => ({
                             color:
                                 spel?.status === status.value
-                                    ? 'white'
+                                    ? theme.palette.getContrastText(status.color)
                                     : status.color,
                             bgcolor:
                                 spel?.status === status.value
                                     ? status.color
-                                    : 'transparent',
+                                    : 'inherit',
                             '&:hover': {
-                                bgcolor: status.color,
                                 color: 'white',
                             },
-                        }}
+                            '&.Mui-disabled': {
+                                bgcolor: status.color,
+                                color: theme.palette.getContrastText(status.color),
+                            }
+                        })}
                     >
                         {status.description}
                     </Button>
                 ))}
             </Box>
             <Box sx={{ mt: 2 }}>
-                <Typography
-                    color="primary"
-                    onClick={() =>
-                        route(`${window.location.origin}/spel/${spelId}`)
-                    }
-                >
+                <Typography>
                     {`${window.location.origin}/spel/${spelId}`}
                 </Typography>
-                <Typography
-                    onClick={() =>
-                        route(`${window.location.origin}/resultat/${spelId}`)
-                    }
-                >
+                <Typography>
                     {`${window.location.origin}/resultat/${spelId}`}
                 </Typography>
                 {/*<Typography>Deltakelser: {stats.totalGuesses}</Typography>*/}

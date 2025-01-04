@@ -57,8 +57,19 @@ export function SpelDetaljar({ spel, spelId }) {
                 <CardHeader
                     title={spel.namn}
                     subheader={spel.dato}
+                    sx={{
+                        '& .MuiCardHeader-title': {textAlign: '-webkit-auto', marginTop: '-4px'},
+                        '& .MuiCardHeader-subheader': {textAlign: '-webkit-auto',}
+                    }}
                     action={
-                        <Chip label={status.description} color={status.color} />
+                        <Chip label={status.description}
+                        sx={(theme) => ({
+                            color: theme.palette.getContrastText(status.color),
+                            bgcolor:
+                                spel.status ===
+                                status.value
+                                ? status.color
+                                : 'inherit'})} />
                     }
                 />
                 <Box
@@ -93,13 +104,6 @@ export function SpelDetaljar({ spel, spelId }) {
                             gap: 2,
                         }}
                     >
-                        <Box>
-                            <Typography
-                                sx={{ color: status.color, fontWeight: 'bold' }}
-                            >
-                                {status.description}
-                            </Typography>
-                        </Box>
                         <Box
                             sx={{
                                 display: 'flex',
@@ -131,32 +135,37 @@ export function SpelDetaljar({ spel, spelId }) {
                                 gap: 2,
                             }}
                         >
-                            <Typography>Status:</Typography>
                             <ButtonGroup size="small">
                                 {Object.entries(SPEL_STATUS).map(
                                     ([key, status]) => (
                                         <Button
                                             key={key}
-                                            onClick={() =>
+                                            onClick={() => {
+                                                if (spel.status === status.value) {
+                                                    return}
                                                 handleStatusChange(status.value)
-                                            }
+                                            }}
                                             disabled={
                                                 spel.status === status.value
                                             }
-                                            sx={{
+                                            sx={(theme) => ({
+                                                color:
+                                                    spel.status === status.value
+                                                        ? theme.palette.getContrastText(status.color)
+                                                        : status.color,
                                                 bgcolor:
                                                     spel.status === status.value
                                                         ? status.color
                                                         : 'inherit',
-                                                color:
-                                                    spel.status === status.value
-                                                        ? 'white'
-                                                        : status.color,
                                                 '&:hover': {
-                                                    bgcolor: status.color,
+                                                    //bgcolor: status.color,
                                                     color: 'white',
                                                 },
-                                            }}
+                                                '&.Mui-disabled': {
+                                                    bgcolor: status.color,
+                                                    color: theme.palette.getContrastText(status.color),
+                                                },
+                                            })}
                                         >
                                             {status.description}
                                         </Button>
@@ -164,7 +173,7 @@ export function SpelDetaljar({ spel, spelId }) {
                                 )}
                             </ButtonGroup>
                         </Box>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="body2" color="vert.dark">
                             Opprettet:{' '}
                             {new Date(
                                 spel.createdAt?.seconds * 1000

@@ -108,6 +108,7 @@ export const SuperAdminPage = () => {
                         fullWidth
                     />
                     <Button
+                        sx={{width:'9.6rem'}}
                         variant="contained"
                         startIcon={<PersonAddIcon />}
                         onClick={handleAddNewVert}
@@ -118,9 +119,9 @@ export const SuperAdminPage = () => {
                 </Box>
             </Paper>
             <Paper>
-                <Box>
+                <Box sx={{borderRadius:0, border:0, padding:0}}>
                     {Array.isArray(alleSpel) ? (
-                        <Typography>
+                        <Typography sx={{padding: '0.5rem'}}>
                             {' '}
                             Totalt er det oppretta {alleSpel.length} spel
                         </Typography>
