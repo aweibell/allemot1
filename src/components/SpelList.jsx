@@ -1,5 +1,4 @@
-import styled from '@emotion/styled'
-import { List, ListItem, Typography, Chip, colors } from '@mui/material'
+import { List, ListItem, Typography, Chip, Box } from '@mui/material'
 import { SPEL_STATUS } from '../lib/types'
 
 export function SpelList({ spel }) {
@@ -24,8 +23,8 @@ export function SpelList({ spel }) {
                         },
                     })}
                 >
-                    <div style={{ width: '100%' }}>
-                        <div
+                    <Box style={{ width: '100%' }}>
+                        <Box
                             style={{
                                 display: 'flex',
                                 justifyContent: 'space-between',
@@ -42,21 +41,21 @@ export function SpelList({ spel }) {
                                 }
                                 onClick={e => e.preventDefault()}
                             />
-                        </div>
+                        </Box>
                         <Typography color="vert.dark">
                             {game.dato}
                         </Typography>
-                        <div>
-                            <Typography variant="body2" component={"span"} sx={{color:"vert.dark"}}>
+                        <Box>
+                            <Typography variant="body2" component={'span'} sx={{color:'vert.dark'}}>
                                 Deltakar:
                             </Typography>
-                            <Typography component={"span"} color="deltakar.main">
+                            <Typography component={'span'} color="deltakar.main">
                             {game.deltakarId
                                     ? ` ${game.deltakarEmail}`
                                     : ' Ingen deltakar valgt'}
                             </Typography>
-                        </div>
-                    </div>
+                        </Box>
+                    </Box>
                 </ListItem>
             ))}
         </List>

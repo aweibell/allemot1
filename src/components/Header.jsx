@@ -111,7 +111,7 @@ export function Header() {
                 background: 'transparent',
                 borderBottom: 'solid black 1px',
             }}
-            >
+        >
             <Box>
                 <Typography
                     color="primary"
@@ -134,10 +134,15 @@ export function Header() {
                     vertUser={isVertUser}
                     reallySuperAdmin={isReallySuperAdmin}
                 />
-                <AccountDropdown
-                    userObject={userObject}
-                    handleSubmit={handleSubmit}
-                />
+
+                {loading
+                    ? 'Loading...'
+                    : userObject && (
+                        <AccountDropdown
+                            userObject={userObject}
+                            handleSubmit={handleSubmit}
+                        />
+                    )}
                 <ConnectionStatus />
             </Box>
         </header>
