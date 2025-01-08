@@ -9,7 +9,9 @@ import {
 import ConnectionStatus from './ConnectionStatus.jsx'
 import { gameService } from '../service/gameService.js'
 import { Box, Typography, IconButton, TextField } from '@mui/material'
-import { Edit, Check } from '@mui/icons-material'
+import { Edit, Check, AccountCircle, Menu } from '@mui/icons-material'
+
+import AccountDropdown from './AccountDropdown.jsx'
 
 function HeaderNav(props) {
     return (
@@ -27,9 +29,6 @@ function HeaderNav(props) {
                     Admin
                 </a>
             )}
-            <a href="/loggut" class={props.url === '/loggut' && 'active'}>
-                Logg ut
-            </a>
         </nav>
     )
 }
@@ -94,17 +93,14 @@ export function Header() {
         setIsEditing(true)
     }
 
-    const handleSubmit = async () => {
-        if (!user || !editedNickname.trim()) return
-
+    const handleSubmit = async (newNickname) => {
         try {
-            await gameService.updateUserNickname(user.uid, editedNickname)
-            setUserObject({ ...userObject, nickname: editedNickname.trim() })
-            setIsEditing(false)
+            await gameService.updateUserNickname(user.uid, newNickname);
+            setUserObject({ ...userObject, nickname: newNickname.trim() });
         } catch (err) {
-            console.error('Failed to update nickname:', err)
+            console.error('Failed to update nickname:', err);
         }
-    }
+    };
 
     return (
         <header
@@ -116,59 +112,39 @@ export function Header() {
                 borderBottom: 'solid black 1px',
             }}
         >
-            <Box sx={{ alignSelf: 'flex-start' }}>
+            <Box>
                 <Typography
                     color="primary"
                     sx={{
                         fontWeight: 'bold',
                         fontFamily: 'Sans-Serif',
                         color: 'primary.main',
+                        fontSize: '1.5rem',
                     }}
                 >
                     Alle mot 1
                 </Typography>
             </Box>
-            <Box
-                sx={{
-                    alignSelf: 'flex-start',
-                    color: 'secondary.main',
-                    display: 'flex',
-                    alignItems: 'center',
-                }}
-            >
+            <Box sx={{
+                display: 'flex',
+                flexDirection: 'row',
+            }}>
+                <HeaderNav
+                    url={url}
+                    vertUser={isVertUser}
+                    reallySuperAdmin={isReallySuperAdmin}
+                />
+
                 {loading
                     ? 'Loading...'
                     : userObject && (
-                        isEditing ? (
-                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                <TextField
-                                    size="small"
-                                    value={editedNickname}
-                                    onChange={(e) => setEditedNickname(e.target.value)}
-                                    onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
-                                    autoFocus
-                                    sx={{ width: '120px' }}
-                                />
-                                <IconButton onClick={handleSubmit} size="small" sx={{ color: 'secondary.main' }}>
-                                    <Check />
-                                </IconButton>
-                            </Box>
-                        ) : (
-                            <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={handleEditClick}>
-                                <span>{userObject.nickname}</span>
-                                <IconButton size="small" sx={{ color: 'secondary.main' }}>
-                                    <Edit fontSize="small" />
-                                </IconButton>
-                            </Box>
-                        )
+                        <AccountDropdown
+                            userObject={userObject}
+                            handleSubmit={handleSubmit}
+                        />
                     )}
+                <ConnectionStatus />
             </Box>
-            <HeaderNav
-                url={url}
-                vertUser={isVertUser}
-                reallySuperAdmin={isReallySuperAdmin}
-            />
-            <ConnectionStatus />
         </header>
     )
 }
