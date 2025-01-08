@@ -55,9 +55,7 @@ export const allemot1Theme = createTheme({
                 root: {
                     fontSize: '0.75rem',
                     fontWeight: 'bold',
-                    '&.MuiButton-root':{
-                        minWidth: '0',
-                    },
+                    minWidth: '0',
                     '&.Mui-disabled': {
                         color:'grey'
                     }
