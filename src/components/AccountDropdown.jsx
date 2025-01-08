@@ -63,7 +63,7 @@ const AccountDropdown = ({ userObject, handleSubmit }) => {
                                         width: '12rem',
                                         minWidth: '50px',
                                         maxWidth: '250px',
-                                        width: `${editedNickname.length * 0.8}rem`,
+                                        width: '10rem',
                                         backgroundColor: theme.palette.background.elevation1,
                                         fontWeight: '900',
                                         marginTop: '0.5rem',
