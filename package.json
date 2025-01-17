@@ -18,7 +18,7 @@
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.1",
 		"firebase": "^11.0.2",
-		"postcss": "^8.4.49",
+		"postcss": "^8.5.0",
 		"preact": "^10.22.1",
 		"preact-iso": "^2.8.1",
 		"prettier": "^3.3.3",
