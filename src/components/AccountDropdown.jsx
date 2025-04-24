@@ -103,6 +103,7 @@ const AccountDropdown = ({ userObject, handleSubmit }) => {
                                         textShadow: '1px 1px 2px black', 
                                         marginBottom:'0.2rem'})}>
                                     {userObject?.nickname || 'Gjest'}
+                                    {userObject?.email ? ' (' + userObject.email + ')' : ''}
                                 </Typography>
                                 <Button
                                     variant='contained'
