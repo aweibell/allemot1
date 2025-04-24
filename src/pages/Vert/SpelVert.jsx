@@ -7,7 +7,6 @@ import {
     ListItemText,
     Typography,
     IconButton,
-    ListItemSecondaryAction,
 } from '@mui/material'
 import { Edit as EditIcon } from '@mui/icons-material'
 import { EksperimentDialog } from '../../components/EksperimentDialog.jsx'
@@ -39,10 +38,9 @@ export const ExperimentList = ({
                             color: index === currentIndex ? 'white' : 'inherit',
                             '&:hover': {
                                 bgcolor: 'background.elevation4',
-                            }
+                            },
+                            cursor: 'pointer'
                         }}
-                        button
-                        selected={index === currentIndex}
                         onClick={() => onSelectExperiment(exp.id)}
                         secondaryAction={
                             typeof onEditExperiment === 'function' && (
