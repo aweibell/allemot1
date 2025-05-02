@@ -24,7 +24,7 @@ export const ExperimentList = ({
 }) => {
     return (
         <Card sx={{ p: 2, mb: 2 }}>
-            <Typography variant="h6">Eksperimenter</Typography>
+            <Typography variant="h6">Eksperiment</Typography>
             <List sx={{display:'flex', flexDirection:'column', gap:'0.4rem'}}>
                 {experiments.map((exp, index) => (
                     <ListItem
