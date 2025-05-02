@@ -58,7 +58,7 @@ export const ExperimentList = ({
                         }
                     >
                         <ListItemText
-                            primary={exp.title}
+                            primary={index + 1 + '. ' + exp.title}
                             secondary={EXPERIMENT_STATUS[exp.status]?.description}
                             sx={{
                                 '& .MuiListItemText-secondary': {
