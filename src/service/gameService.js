@@ -38,6 +38,7 @@ export const gameService = {
         )
     },
 
+/** Requests failed with insufficient permissions. Changed to use listenToGame instead.
     async getDeltakarId(spelId) {
         const snapshot = await getDocs(
             collection(db, 'spel', spelId, 'deltakarId')
@@ -45,6 +46,7 @@ export const gameService = {
         console.log('snapshot deltakar', snapshot)
         return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
     },
+ */ 
 
     async getExperiments(spelId) {
         const snapshot = await getDocs(
