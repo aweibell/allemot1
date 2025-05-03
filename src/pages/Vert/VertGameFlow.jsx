@@ -24,15 +24,19 @@ export const VertGameFlow = ({ spelId }) => {
         const handleKeyPress = e => {
             switch (e.key) {
                 case 'ArrowRight':
+                    e.preventDefault()
                     handleNextState()
                     break
                 case 'ArrowLeft':
+                    e.preventDefault()
                     handlePrevState()
                     break
-                case 'ArrowUp':
+                case 'ArrowDown':
+                    e.preventDefault()
                     handleNextExperiment()
                     break
-                case 'ArrowDown':
+                case 'ArrowUp':
+                    e.preventDefault()
                     handlePrevExperiment()
                     break
             }

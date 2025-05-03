@@ -14,8 +14,9 @@ export const ExperimentDetailView = ({ spelId, experiment }) => {
 
     useEffect(() => {
         if (!spelId) return
-        const deltakarId = gameService.getDeltakarId(spelId)
-        setDeltakarId(deltakarId)
+        return gameService.listenToGame(spelId, (spel) => {
+            setDeltakarId(spel.deltakarId)
+        })
     }, [spelId])
 
     if (!experiment) return null
